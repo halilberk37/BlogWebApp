@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Yorum Sil - Blog Sistemi{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3>Yorum Sil</h3>
+            </div>
+            <div class="card-body">
+                <p>Bu yorumu silmek istediğinize emin misiniz?</p>
+                <div class="border p-3 mb-3">
+                    <strong>{{ comment.author.username }}</strong>
+                    <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+                    <p class="mt-2">{{ comment.content }}</p>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                    <a href="{% url 'post_detail' comment.post.pk %}" class="btn btn-secondary">İptal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

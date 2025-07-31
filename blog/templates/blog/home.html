@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Ana Sayfa - Blog Sistemi{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Blog Sistemi</h1>
+        {% if user.is_authenticated %}
+            <div class="alert alert-success">
+                <h4>Hoş geldiniz, {{ user.username }}!</h4>
+                <p>Blog sistemine başarıyla giriş yaptınız. Şimdi yazı ekleyebilir ve yorum yapabilirsiniz.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5>Hızlı İşlemler</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'post_create' %}" class="btn btn-primary me-2">Yeni Yazı Ekle</a>
+                    <a href="{% url 'post_list' %}" class="btn btn-secondary">Tüm Yazıları Görüntüle</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h4>Blog Sistemine Hoş Geldiniz!</h4>
+                <p>Yazı eklemek ve yorum yapmak için lütfen giriş yapın veya kayıt olun.</p>
+                <a href="{% url 'login' %}" class="btn btn-primary me-2">Giriş Yap</a>
+                <a href="{% url 'register' %}" class="btn btn-outline-primary">Kayıt Ol</a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Son Yazılar</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Henüz yazı bulunmuyor.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

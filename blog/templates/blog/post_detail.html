@@ -1,0 +1,63 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} - Blog Sistemi{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>{{ post.title }}</h2>
+                <small class="text-muted">
+                    Yazar: {{ post.author.username }} | 
+                    Tarih: {{ post.created_at|date:"d.m.Y H:i" }}
+                </small>
+            </div>
+            <div class="card-body">
+                <p>{{ post.content|linebreaks }}</p>
+            </div>
+            <div class="card-footer">
+                {% if user == post.author %}
+                <a href="{% url 'post_update' post.pk %}" class="btn btn-warning btn-sm">Düzenle</a>
+                <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger btn-sm">Sil</a>
+                {% endif %}
+                <a href="{% url 'post_list' %}" class="btn btn-secondary btn-sm">Geri Dön</a>
+            </div>
+        </div>
+
+        <!-- Yorumlar -->
+        <div class="card">
+            <div class="card-header">
+                <h4>Yorumlar ({{ comments.count }})</h4>
+            </div>
+            <div class="card-body">
+                <!-- Yorum Ekleme Formu -->
+                <form method="post" class="mb-4">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ comment_form.content.id_for_label }}" class="form-label">Yorum Ekle</label>
+                        {{ comment_form.content }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Yorum Ekle</button>
+                </form>
+
+                <!-- Yorumlar Listesi -->
+                {% for comment in comments %}
+                <div class="border-bottom pb-3 mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ comment.author.username }}</strong>
+                        <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+                    </div>
+                    <p class="mt-2">{{ comment.content }}</p>
+                    {% if user == comment.author %}
+                    <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-danger btn-sm">Yorumu Sil</a>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p class="text-muted">Henüz yorum yok.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
